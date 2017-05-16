@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.my.fuse.demo</groupId>
+  <artifactId>fuse-cxf-fileupload-service</artifactId>
+  <packaging>bundle</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <name>fuse-cxf-fileupload-service</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+ 	<version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven-resources-plugin-version>2.6</maven-resources-plugin-version>
+    <build-helper-maven-plugin-version>1.9.1</build-helper-maven-plugin-version>
+		
+    <!-- the version of the BOM, defining all the dependency versions -->
+    <fabric.version>1.2.0-SNAPSHOT</fabric.version>
+
+    <!-- fabric8 deploy profile configuration -->
+    <fabric8.profile>fuse.cxf.fileupload.service</fabric8.profile>
+    <fabric8.parentProfiles>feature-camel</fabric8.parentProfiles>
+    <fabric8.features>camel-blueprint camel-amq cxf-jaxrs fabric-hawtio-swagger camel-swagger camel-jetty camel-jackson camel-servlet camel-bindy camel-http4</fabric8.features>
+    <fabric8.profileConfigDir>src/main/fabric8/${build.profile.id}</fabric8.profileConfigDir>    
+
+    <!-- the version of the JBoss Fuse BOM, defining all the dependency versions -->
+    <jboss.fuse.bom.version>6.2.1.redhat-084</jboss.fuse.bom.version>
+      
+    <oracle.jdbc.version>11.2.0.3</oracle.jdbc.version>
+    <commons.dbcp.version>1.4.0.3</commons.dbcp.version>
+    <slf4j-version>1.7.12</slf4j-version>
+    <spring-version>3.0.5.RELEASE</spring-version>
+ 	<commons.dbcp.version>1.4</commons.dbcp.version>       
+          
+  </properties>
+ <!-- element tells MAVEN where to go and look for dependancies -->
+  <repositories>
+  
+     <repository>
+      <id>release.fusesource.org</id>
+      <name>FuseSource Release Repository</name>
+      <url>http://repo.fusesource.com/nexus/content/repositories/releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+     <id>ea.fusesource.org</id>
+     <name>FuseSource Community Early Access Release Repository</name>
+     <url>http://repo.fusesource.com/nexus/content/groups/ea</url>
+     <snapshots>
+      <enabled>false</enabled>
+     </snapshots>
+     <releases>
+      <enabled>true</enabled>
+     </releases>
+    </repository>
+
+        
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>release.fusesource.org</id>
+      <name>FuseSource Release Repository</name>
+      <url>http://repo.fusesource.com/nexus/content/repositories/releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+    <pluginRepository>
+     <id>ea.fusesource.org</id>
+     <name>FuseSource Community Early Access Release Repository</name>
+     <url>http://repo.fusesource.com/nexus/content/groups/ea</url>
+     <snapshots>
+      <enabled>false</enabled>
+     </snapshots>
+     <releases>
+      <enabled>true</enabled>
+     </releases>
+    </pluginRepository>      
+  </pluginRepositories>
+  
+
+
+
+
+  <!-- element tells MAVEN where to store the artifacts created from the build -->
+  <distributionManagement>
+      <repository>
+          <id>releases</id>
+          <url>http://192.168.56.110:8081/nexus/content/repositories/releases/</url>
+          
+      </repository>
+      
+      <snapshotRepository>
+          <id>snapshots</id>
+          <name>Internal Snapshots</name>
+          <url>http://192.168.56.110:8081/nexus/content/repositories/snapshots/</url>
+      </snapshotRepository>
+  </distributionManagement>
+
+    <scm>
+        <connection>scm:git:git@github.com:jboss-fuse/fuse.git</connection>
+        <developerConnection>scm:git:git@github.com:jboss-fuse/fuse.git</developerConnection>
+        <url>https://github.com/jboss-fuse/fuse/tree/master/quickstarts</url>
+    </scm>
+
+  <dependencyManagement>
+    <dependencies>
+		<dependency>
+		  <groupId>org.jboss.fuse.bom</groupId>
+		  <artifactId>jboss-fuse-parent</artifactId>
+		  <version>${jboss.fuse.bom.version}</version>
+		  <type>pom</type>
+		  <scope>import</scope>
+		</dependency>
+    </dependencies>
+  </dependencyManagement>
+
+    <dependencies>
+
+	    <dependency>
+	      <groupId>org.apache.camel</groupId>
+	      <artifactId>camel-cxf</artifactId>
+	    </dependency>
+    
+	    <dependency>
+	      <groupId>org.apache.camel</groupId>
+	      <artifactId>camel-core</artifactId>
+	    </dependency>
+        
+	    <dependency>
+	      <groupId>org.apache.camel</groupId>
+	      <artifactId>camel-blueprint</artifactId>
+	    </dependency>
+    
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jaxb</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-ftp</artifactId>
+		</dependency>
+						
+		<dependency>
+		    <groupId>org.apache.camel</groupId>
+		    <artifactId>camel-jms</artifactId>
+		</dependency>
+
+    <!-- using Jetty with CXF -->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http-jetty</artifactId>
+    </dependency>
+    <!-- explicit dependency to exclude asm:asm:3.3.1 -->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+    </dependency>
+
+
+		<!-- Apache Commons -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+			
+		<!-- logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+
+ 	   <!-- testing -->
+    
+	    <dependency>
+	      <groupId>org.apache.camel</groupId>
+	      <artifactId>camel-test</artifactId>
+	      <scope>test</scope>
+	    </dependency>
+	    
+	     <dependency>
+	      <groupId>org.apache.camel</groupId>
+	      <artifactId>camel-test-blueprint</artifactId>
+	      <version>2.17.1</version>
+	      <scope>test</scope>
+		</dependency>	
+		
+        <dependency>
+            <groupId>org.apache.geronimo.components</groupId>
+            <artifactId>geronimo-transaction</artifactId>
+            <version>3.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+<!--  rest for QA testing  -->
+    <!--
+        For coding the example, we don't actually depend on any CXF classes - we only use the JAX-RS (JSR-339)
+        standard annotations and API
+    -->
+
+
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-servlet</artifactId>
+    </dependency>
+    <!-- use for json binding -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jackson</artifactId>
+    </dependency>    
+
+    <dependency>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-swagger</artifactId>
+    </dependency>
+  
+  
+         <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jetty8</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-netty-http</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jackson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-http4</artifactId>
+        </dependency>     
+	</dependencies>    
+    <!-- Profiles configuration -->
+    <profiles>
+        <!-- The configuration of the development profile -->
+        <profile>
+            <id>dev</id>
+            <!-- The development profile is active by default -->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <build.profile.id>dev</build.profile.id>
+            </properties>
+        </profile>
+        <!-- The configuration of the production profile -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <build.profile.id>prod</build.profile.id>
+            </properties>
+        </profile>
+        <!-- The configuration of the testing profile -->
+        <profile>
+            <id>uat</id>
+            <properties>
+                <build.profile.id>uat</build.profile.id>
+            </properties>
+        </profile>
+     </profiles>
+     
+
+  <build>
+  
+
+    <defaultGoal>install</defaultGoal>
+
+    <plugins>
+	
+
+	
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${version.maven-bundle-plugin}</version>
+        <extensions>true</extensions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin-version}</version>
+        <executions>
+          <execution>
+            <id>filter</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+
+       <!-- to run the example using mvn camel:run -->
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-maven-plugin</artifactId>
+        <version>2.15.1.redhat-621084</version>
+        <configuration>
+          <useBlueprint>true</useBlueprint>
+        </configuration>
+      </plugin>
+      
+     <!-- to deploy on jboss fuse deploy folder
+    <plugin>
+      <artifactId>maven-antrun-plugin</artifactId>
+      <version>1.8</version>
+      <executions>
+        <execution>
+          <id>copy</id>
+          <phase>install</phase>
+          <configuration>
+            <tasks>
+              <copy todir="/Users/amitverma/jboss/jboss-fuse-6.2.1.redhat-084/deploy">
+                <fileset dir="${project.build.directory}" includes="*.jar" />
+              </copy>
+            </tasks>
+          </configuration>
+          <goals>
+            <goal>run</goal>
+          </goals>
+        </execution> 
+      </executions>
+    </plugin>
+-->
+      
+      <plugin>
+        <!--
+          this plugin will use the fabric.* properties to configure its behaviour
+          see the Properties section here: http://fabric8.io/gitbook/mavenPlugin.html
+        -->
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>1.2.0.redhat-621084</version>
+       <configuration>
+        <profile>${fabric8.profile}</profile>
+        <profileConfigDir>${fabric8.profileConfigDir}</profileConfigDir>
+<!--         <bundles>
+		    mvn:com.ibm.mq.osgi/directip/7.5.0.6
+			mvn:com.ibm.mq.osgi/java/7.5.0.6
+			mvn:com.ibm.msg.client.osgi.commonservices/j2se/7.5.0.6		
+	 		mvn:com.ibm.msg.client.osgi.jms/prereq/7.5.0.6      
+	 		mvn:com.ibm.msg.client.osgi/jms/7.5.0.6
+	 		mvn:com.ibm.msg.client.osgi/nls/7.5.0.6  
+	 		mvn:com.ibm.msg.client.osgi.wmq/nls/7.5.0.6  
+	 		mvn:com.ibm.msg.client.osgi.wmq/prereq/7.5.0.6  
+	 		mvn:com.ibm.msg.client.osgi/wmq/7.5.0.6
+ 		</bundles>  -->       
+       </configuration>       
+        <executions>
+	      <execution>
+	        <id>zip</id>
+	        <phase>package</phase>
+	        <goals>
+	          <goal>zip</goal>
+	        </goals>
+	      </execution>
+	    </executions>
+    
+      </plugin>
+      
+    </plugins>
+  </build>
+
+</project>
