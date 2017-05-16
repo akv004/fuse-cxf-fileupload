@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://www.example.org/FileUploadService/" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+name="XrayStorage" 
+targetNamespace="http://mediStor.org/x-rays">
+ 
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://mediStor.org/types/" xmlns="http://www.w3.org/2001/XMLSchema">>
+      <xsd:complexType name="xRayType">
+        <xsd:sequence>
+          <xsd:element name="patientName" type="xsd:string" />
+          <xsd:element name="patientNumber" type="xsd:int" />
+          <xsd:element name="imageData" type="xsd:base64Binary" />
+        </xsd:sequence>
+      </complexType>
+      <element name="xRay" type="xsd:xRayType" />
+    </schema>
+  </wsdl:types>
+ 
+  <wsdl:message name="storRequest">
+    <wsdl:part name="record" element="xsd:xRay"/>
+  </wsdl:message>
+  <wsdl:message name="storResponse">
+    <wsdl:part name="success" type="xsd:boolean"/>
+  </wsdl:message>
+  
+  
+  <wsdl:portType name="xRayStorage">
+    <wsdl:operation name="store">
+      <wsdl:input message="tns:storRequest" name="storRequest"/>
+      <wsdl:output message="tns:storResponse" name="storResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+ 
+ 
+  <wsdl:binding name="xRayStorageSOAP" type="tns:xRayStorage">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="store">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="storRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="storResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+   
+
+  
+  <wsdl:service name="XrayStorageService">
+    <wsdl:port binding="tns:xRayStorageSOAP" name="xRayStorageSOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+</wsdl:definitions>
