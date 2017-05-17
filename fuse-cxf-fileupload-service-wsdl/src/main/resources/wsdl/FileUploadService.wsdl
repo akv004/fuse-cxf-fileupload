@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
-xmlns:tns="http://www.example.org/FileUploadService/" 
+<wsdl:definitions 
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://mediStor.org/x-rays"
 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd1="http://mediStor.org/types/"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 name="XrayStorage" 
 targetNamespace="http://mediStor.org/x-rays">
@@ -14,13 +16,13 @@ targetNamespace="http://mediStor.org/x-rays">
           <xsd:element name="patientNumber" type="xsd:int" />
           <xsd:element name="imageData" type="xsd:base64Binary" />
         </xsd:sequence>
-      </complexType>
-      <element name="xRay" type="xsd:xRayType" />
-    </schema>
+      </xsd:complexType>
+      <xsd:element name="xRay" type="xsd1:xRayType" />
+    </xsd:schema>
   </wsdl:types>
  
   <wsdl:message name="storRequest">
-    <wsdl:part name="record" element="xsd:xRay"/>
+    <wsdl:part name="record" element="xsd1:xRay"/>
   </wsdl:message>
   <wsdl:message name="storResponse">
     <wsdl:part name="success" type="xsd:boolean"/>
